@@ -20,6 +20,9 @@ Normalement (si le site n'est pas mort d'ici là), tout est bon utiliser l'appli
 
 ### L'application est ce qu'elle est grâce à :
 
+[Hugo](https://github.com/DevHugo) qui a fait une grande partie de la première version de l'app
+
+
 [https://github.com/wdullaer/MaterialDateTimePicker](https://github.com/wdullaer/MaterialDateTimePicker)
 
 [https://github.com/pnikosis/materialish-progress](https://github.com/pnikosis/materialish-progress)
