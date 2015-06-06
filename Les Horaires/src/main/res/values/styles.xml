@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--   your app branding color for the app bar -->
+        <item name="colorPrimary">@color/primary</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_dark</item>
+    </style>
+
+    <style name="SpinnerItem">
+        <item name="android:textAppearance">@color/primary_dark</item>
+    </style>
+
+    <style name="Spinner">
+        <item name="android:checkMark">@color/primary</item>
+    </style>
+
+    <color name="primary">#9c27b0</color>
+    <color name="primary_dark">#6a1b9a</color>
+    <color name="accent">#ffab00</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_dark">#000000</color>
+    <color name="background">#EEEEEE</color>
+</resources>

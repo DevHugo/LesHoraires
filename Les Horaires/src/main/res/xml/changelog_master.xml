@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+    <release
+        version="2.1.1"
+        versioncode="38">
+        <change>Possibilité de modifier les horaires.</change>
+    </release>
+    <release
+        version="2.1"
+        versioncode="37">
+        <change>Mise à jour en Material Design.</change>
+        <change>L'écran des favoris est le premier à être affiché.</change>
+        <change>Correction: Quelques bugs.</change>
+    </release>
+    <release
+        version="1.8.5"
+        versioncode="28">
+        <change>Premières versions.</change>
+        <change>Pas très joli.</change>
+    </release>
+</changelog>

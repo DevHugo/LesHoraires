@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/about"
+        />
+    <item
+        android:id="@+id/action_mail"
+        android:title="@string/contact"
+        />
+</menu>

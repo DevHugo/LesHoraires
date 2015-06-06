@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="72sp"
+              android:background="#ffffff"
+              android:gravity="center_vertical|center|center_horizontal"
+              android:orientation="horizontal">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".4"
+        android:entries="@array/days_arrays"
+        android:prompt="@string/jour"
+        />
+
+    <TextView
+        android:id="@+id/from"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".3"
+        android:clickable="true"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/to"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".3"
+        android:clickable="true"
+        android:ems="10"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#000000"/>
+
+
+</LinearLayout>

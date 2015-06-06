@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:horaires="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_reload"
+        android:icon="@mipmap/ic_cached_black_24dp"
+        android:title="@string/vider"
+        horaires:showAsAction="ifRoom"/>
+
+</menu>

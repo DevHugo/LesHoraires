@@ -1,0 +1,144 @@
+package com.amine.horaires;
+
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import com.amine.horaires.models.Horaires;
+import com.amine.horaires.models.Shop;
+import com.amine.horaires.util.Utils;
+import com.melnykov.fab.FloatingActionButton;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class ShopUpdate extends OptionsActivity {
+    private ArrayList<Horaires> h;
+    private RelativeLayout loading;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.update_shop);
+
+        loading = (RelativeLayout) findViewById(R.id.loading);
+
+        final Shop s = getIntent().getExtras().getParcelable("shop");
+
+        ListView hList = (ListView) findViewById(R.id.horaires_list);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button save = (Button) findViewById(R.id.button);
+
+        h = new ArrayList<Horaires>();
+
+        initializeHoraires();
+
+        final UpdateAdapter adapter = new UpdateAdapter(this, h, getFragmentManager());
+
+        hList.setAdapter(adapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Horaires h = adapter.getItem(adapter.getCount() - 1);
+                adapter.add(new Horaires(h));
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loading.setVisibility(View.VISIBLE);
+
+                ArrayList<HashMap<String, Integer>> periodes = new ArrayList<HashMap<String, Integer>>();
+                Collections.sort(h);
+
+                String periodsString = "";
+                int i = 0;
+                for (Horaires hor : h) {
+                    periodsString += "&periods[0][" + i + "][day]=" + hor.getDay();
+                    periodsString += "&periods[0][" + i + "][from_h]=" + hor.getFrom_h();
+                    periodsString += "&periods[0][" + i + "][to_h]=" + hor.getTo_h();
+                    periodsString += "&periods[0][" + i + "][to_m]=" + hor.getTo_m();
+                    i++;
+                }
+
+                // Toast.makeText(getApplicationContext(), "Cette fonctionnalité est en attente de validation par Les-horaires.fr", Toast.LENGTH_SHORT).show();
+                UpdateTask u = new UpdateTask();
+                u.execute(Utils.generateUrlForEdit(s.getId(), periodsString));
+
+            }
+        });
+    }
+
+    private void initializeHoraires() {
+        h.add(new Horaires(1));
+    }
+
+    private class UpdateTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... params) {
+            HttpURLConnection conn = null;
+            InputStream is = null;
+            String contentAsString = "";
+
+            try {
+                URL url = params[0];
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000 /* milliseconds */);
+                conn.setConnectTimeout(15000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+                // Starts the query
+                conn.connect();
+                is = conn.getInputStream();
+
+                // Convert the InputStream into a String
+
+                Scanner reader = new Scanner(is, "ISO-8859-1");
+                while (reader.hasNextLine()) {
+                    contentAsString = contentAsString + reader.nextLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                // Makes sure that the InputStream is closed after the app is finished using it.
+                if (is != null)
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                if (conn != null)
+                    conn.disconnect();
+            }
+            return contentAsString;
+        }
+
+        @Override
+        protected void onPostExecute(String string) {
+            loading.setVisibility(View.GONE);
+            super.onPostExecute(string);
+            Toast.makeText(getApplicationContext(), "Mise à jour effectuée!", Toast.LENGTH_SHORT).show();
+        }
+    }
+}
