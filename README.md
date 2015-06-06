@@ -21,7 +21,9 @@ Normalement (si le site n'est pas mort d'ici là), tout est bon utiliser l'appli
 ### L'application est ce qu'elle est grâce à :
 
 [https://github.com/wdullaer/MaterialDateTimePicker](https://github.com/wdullaer/MaterialDateTimePicker)
+
 [https://github.com/pnikosis/materialish-progress](https://github.com/pnikosis/materialish-progress)
+
 [https://github.com/makovkastar/FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
 
 ### Les images
