@@ -20,13 +20,14 @@ Normalement (si le site n'est pas mort d'ici là), tout est bon utiliser l'appli
 
 ### L'application est ce qu'elle est grâce à :
 
-[](https://github.com/wdullaer/MaterialDateTimePicker)
-[](https://github.com/pnikosis/materialish-progress)
-[](https://github.com/makovkastar/FloatingActionButton)
+[https://github.com/wdullaer/MaterialDateTimePicker](https://github.com/wdullaer/MaterialDateTimePicker)
+[https://github.com/pnikosis/materialish-progress](https://github.com/pnikosis/materialish-progress)
+[https://github.com/makovkastar/FloatingActionButton](https://github.com/makovkastar/FloatingActionButton)
 
 ### Les images
 
-[](https://thenounproject.com/term/wheelchair-accessible/13098/#)
-[](https://thenounproject.com/term/wifi/47165/")
-[](https://github.com/google/material-design-icons")
+[https://thenounproject.com/term/wheelchair-accessible/13098/#](https://thenounproject.com/term/wheelchair-accessible/13098/#)
+[https://thenounproject.com/term/wifi/47165/](https://thenounproject.com/term/wifi/47165/)
+
+[https://github.com/google/material-design-icons](https://github.com/google/material-design-icons)
 
