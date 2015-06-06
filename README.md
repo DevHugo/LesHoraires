@@ -29,6 +29,7 @@ Normalement (si le site n'est pas mort d'ici là), tout est bon utiliser l'appli
 ### Les images
 
 [https://thenounproject.com/term/wheelchair-accessible/13098/#](https://thenounproject.com/term/wheelchair-accessible/13098/#)
+
 [https://thenounproject.com/term/wifi/47165/](https://thenounproject.com/term/wifi/47165/)
 
 [https://github.com/google/material-design-icons](https://github.com/google/material-design-icons)
