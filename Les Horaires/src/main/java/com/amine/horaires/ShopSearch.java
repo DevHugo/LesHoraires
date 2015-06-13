@@ -34,14 +34,15 @@ public class ShopSearch extends OptionsActivity {
         loading = (RelativeLayout) findViewById(R.id.loading);
         Button searchButton = (Button) findViewById(R.id.searchAction);
 
-        // @todo form validation (empty ...)
         searchButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                loading.setVisibility(View.VISIBLE);
-                SearchTask s = new SearchTask();
-                s.execute(Utils.generateUrlForTextLocation(name.getText().toString(), location.getText().toString()));
+                if (name.getText().toString().trim().length() > 0 && location.getText().toString().trim().length() > 0) {
+                    loading.setVisibility(View.VISIBLE);
+                    SearchTask s = new SearchTask();
+                    s.execute(Utils.generateUrlForTextLocation(name.getText().toString(), location.getText().toString()));
+                }
             }
         });
 
