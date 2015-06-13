@@ -1,7 +1,9 @@
 # LesHoraires
 
 Cette application vous permet de connaître rapidement les horaires des commerces, boutiques, restaurants et services (mairie, bureau de poste, ...). 
-Pour chaque commerce ou service, une fiche permet de connaître son adresse et numéro de téléphone ainsi que des informations pratiques et bien sûr les horaires d'ouverture et de fermeture
+Pour chaque commerce ou service, une fiche permet de connaître son adresse et numéro de téléphone ainsi que des informations pratiques et bien sûr les horaires d'ouverture et de fermeture.
+
+Quelques images de l'application:
 
 ![Liste des favoris](https://lh3.googleusercontent.com/zqbH-OG2__Q14Da_foiIssCYPRL1UuYKGxuEEiZCuX2erZ1L9XjyR8zv0fja4URrLx8=h310-rw)
 ![Recherche](https://lh3.googleusercontent.com/l3WXKG0iFA-PJa6VOdCN8JYn9QbsU5tf-UU1OIHQeDv7ySmuxD5r0sxzVgiRJ_N3OW4=h310-rw)
