@@ -35,13 +35,21 @@ android {
     }
 
     signingConfigs {
-        release {
+        release{
+            // If you want to use this signing configuration, you must define signingConfig signingConfigs.unsigned to
+            // signingConfig signingConfig.release
+        }
+
+        unsigned{
+            storePassword = ""
+            keyAlias = ""
+            keyPassword = ""
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.unsigned
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
