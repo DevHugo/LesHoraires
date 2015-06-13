@@ -26,4 +26,5 @@
     <color name="text_primary">#FFFFFF</color>
     <color name="text_dark">#000000</color>
     <color name="background">#EEEEEE</color>
+    <color name="progressWheelColor">#5588FF</color>
 </resources>
