@@ -1,17 +1,16 @@
 package com.amine.horaires.util;
 
+import android.util.Log;
 import com.amine.horaires.models.Shop;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -215,8 +214,12 @@ public class Parseur {
 
             saxParser.parse(is, handler);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            Log.wtf("Parseur", "The parser configuration seems to be unexpected.", e);
+        } catch (IOException e) {
+            Log.e("Parseur", "API response seems to be unexpected.", e);
+        } catch (SAXException e) {
+            Log.e("Parseur", "Impossible to parse API response.", e);
         }
 
         return listeMagasins;
