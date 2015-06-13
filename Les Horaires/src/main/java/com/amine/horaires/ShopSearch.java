@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,9 +83,9 @@ public class ShopSearch extends OptionsActivity {
             HttpURLConnection conn = null;
             InputStream is = null;
             String contentAsString = "";
-
+            URL url = null;
             try {
-                URL url = params[0];
+                url = params[0];
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
@@ -102,19 +103,17 @@ public class ShopSearch extends OptionsActivity {
                     contentAsString = contentAsString + reader.nextLine();
                 }
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                Log.e("ShopSearch", "The API doesn't respond correctly. Asked url was " + url.toString(), e);
             } catch (ProtocolException e) {
-                e.printStackTrace();
+                Log.e("ShopSearch", "The protocol doesn't seems to be HTTP. Url was " + url.toString(), e);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("ShopSearch", "The API response is not readable. Url was " + url.toString(), e);
             } finally {
                 // Makes sure that the InputStream is closed after the app is finished using it.
                 if (is != null)
                     try {
                         is.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (IOException e) {}
                 if (conn != null)
                     conn.disconnect();
             }

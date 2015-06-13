@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -163,28 +164,37 @@ public class ShopDisplay extends OptionsActivity {
 
         @Override
         protected Bitmap doInBackground(String... params) {
-            URL url;
+            URL url = null;
             Bitmap b = null;
+            HttpURLConnection conn = null;
+            InputStream is = null;
             try {
                 url = new URL(params[0]);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
                 conn.connect();
 
-                InputStream is = conn.getInputStream();
+                is = conn.getInputStream();
                 b = BitmapFactory.decodeStream(is);
-
 
                 is.close();
                 conn.disconnect();
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was "+url.toString(), e);
             } catch (ProtocolException e) {
-                e.printStackTrace();
+                Log.e("ShopDisplay", "The protocol doesn't seems to be HTTP. Url was " + url.toString(), e);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("ShopDisplay", "The image seems to be corrupt. Url was " + url.toString(), e);
+            } finally {
+                // Makes sure that the InputStream is closed after the app is finished using it.
+                if (is != null)
+                    try {
+                        is.close();
+                    } catch (IOException e) {}
+                if (conn != null)
+                    conn.disconnect();
             }
             return b;
         }
@@ -201,9 +211,9 @@ public class ShopDisplay extends OptionsActivity {
             HttpURLConnection conn = null;
             InputStream is = null;
             String contentAsString = "";
-
+            URL url = null;
             try {
-                URL url = params[0];
+                url = params[0];
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
@@ -221,19 +231,17 @@ public class ShopDisplay extends OptionsActivity {
                     contentAsString = contentAsString + reader.nextLine();
                 }
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was " + url.toString(), e);
             } catch (ProtocolException e) {
-                e.printStackTrace();
+                Log.e("ShopDisplay", "The protocol doesn't seems to be HTTP. Url was " + url.toString(), e);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("ShopDisplay", "The API response is not readable. Url was " + url.toString(), e);
             } finally {
                 // Makes sure that the InputStream is closed after the app is finished using it.
                 if (is != null)
                     try {
                         is.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (IOException e) {}
                 if (conn != null)
                     conn.disconnect();
             }

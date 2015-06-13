@@ -1,5 +1,7 @@
 package com.amine.horaires.util;
 
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,10 +15,10 @@ public class Utils {
                     + "&get=shops" + "&loc=" + URLEncoder.encode(location, "ISO-8859-1")
                     + "&name=" + URLEncoder.encode(name, "ISO-8859-1"));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e("Utils", "URL was malformed.", e);
             return null;
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e("Utils", "Fail to encode the URL", e);
             return null;
         }
     }
@@ -30,10 +32,10 @@ public class Utils {
                     + "&get=shops" + "&lng=" + lng + "&lat=" + lat + "&name="
                     + URLEncoder.encode(name, "ISO-8859-1") + "&order=distance");
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e("Utils", "URL was malformed.", e);
             return null;
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e("Utils", "Fail to encode the URL", e);
             return null;
         }
     }
@@ -45,7 +47,7 @@ public class Utils {
                     + Configuration.key + "&h=" + Configuration.hashtag
                     + "&get=shop" + "&id=" + idPoi);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e("Utils", "URL was malformed.", e);
             return null;
         }
     }
@@ -57,7 +59,7 @@ public class Utils {
                     + Configuration.key + "&h=" + Configuration.hashtag
                     + "&get=edit" + "&id=" + idPoi + periodsString);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e ("Utils", "URL was malformed.", e);
             return null;
         }
     }
