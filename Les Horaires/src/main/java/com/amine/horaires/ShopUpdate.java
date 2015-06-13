@@ -138,7 +138,7 @@ public class ShopUpdate extends OptionsActivity {
         protected void onPostExecute(String string) {
             loading.setVisibility(View.GONE);
             super.onPostExecute(string);
-            Toast.makeText(getApplicationContext(), "Mise à jour effectuée!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.success_update_shop), Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -26,6 +26,9 @@
     <string name="changelog_ok_button">OK</string>
     <string name="changelog_show_full">Plus…</string>
     <string name="contact">Contacter le dev</string>
+    <string name="time_slot_error">Merci d'utiliser des tranches de 5 minutes maximum</string>
+    <string name="success_update_shop">Mise à jour effectuée!</string>
+    <string name="fail_localize_user">Petit soucis lors de la localisation</string>
     <string-array name="days_arrays">
         <item>Lundi</item>
         <item>Mardi</item>

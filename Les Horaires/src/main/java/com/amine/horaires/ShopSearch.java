@@ -56,7 +56,7 @@ public class ShopSearch extends OptionsActivity {
                     @Override
                     public void gotLocation(Location location) {
                         if (location == null) {
-                            Toast.makeText(getApplicationContext(), "Petit soucis lors de la localisation", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.fail_localize_user), Toast.LENGTH_SHORT).show();
                         } else {
                             URL url = Utils.generateUrlForLatLng(name.getText().toString(), location.getLatitude() + "", location.getLongitude() + "");
                             SearchTask s = new SearchTask();
@@ -68,7 +68,7 @@ public class ShopSearch extends OptionsActivity {
                 boolean gotLocation = myLocation.getLocation(getApplicationContext(),
                         locationResult);
                 if (!gotLocation) {
-                    Toast.makeText(getApplicationContext(), "Erreur de localisation.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.fail_localize_user), Toast.LENGTH_SHORT).show();
                 }
             }
         });
