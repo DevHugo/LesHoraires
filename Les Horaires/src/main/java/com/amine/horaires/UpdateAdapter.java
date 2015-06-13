@@ -66,7 +66,7 @@ class UpdateAdapter extends ArrayAdapter<Horaires> {
                             h.setFrom_h(hours);
                             h.setFrom_m(minutes);
                         } else {
-                            Toast.makeText(context, "Merci d'utiliser des tranches de 5 minutes maximum", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getContext().getResources().getString(R.string.time_slot_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, h.getFrom_h(), h.getFrom_m(), true);
@@ -85,7 +85,7 @@ class UpdateAdapter extends ArrayAdapter<Horaires> {
                             h.setTo_h(hours);
                             h.setTo_m(minutes);
                         } else {
-                            Toast.makeText(context, "Merci d'utiliser des tranches de 5 minutes maximum", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getContext().getResources().getString(R.string.time_slot_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, h.getTo_h(), h.getTo_m(), true);
