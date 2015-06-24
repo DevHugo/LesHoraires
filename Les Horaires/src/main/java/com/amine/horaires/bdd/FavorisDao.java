@@ -65,6 +65,10 @@ public class FavorisDao {
         bdd = maBaseSQLite.getWritableDatabase();
     }
 
+    public void openReadable() {
+        bdd = maBaseSQLite.getWritableDatabase();
+    }
+
     public void close() {
         bdd.close();
     }

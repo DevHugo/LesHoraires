@@ -1,5 +1,8 @@
 package com.amine.horaires.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
@@ -10,6 +13,10 @@ import java.net.URLEncoder;
 public class Utils {
     public static URL generateUrlForTextLocation(String name, String location) {
         try {
+            System.out.print(new URL(Configuration.getAPIUrl() + "/api?key="
+                    + Configuration.key + "&h=" + Configuration.hashtag
+                    + "&get=shops" + "&loc=" + URLEncoder.encode(location, "ISO-8859-1")
+                    + "&name=" + URLEncoder.encode(name, "ISO-8859-1")));
             return new URL(Configuration.getAPIUrl() + "/api?key="
                     + Configuration.key + "&h=" + Configuration.hashtag
                     + "&get=shops" + "&loc=" + URLEncoder.encode(location, "ISO-8859-1")
@@ -62,5 +69,13 @@ public class Utils {
             Log.e ("Utils", "URL was malformed.", e);
             return null;
         }
+    }
+
+    public static boolean checkDeviceConnected(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Need permission : android.permission.ACCESS_NETWORK_STATE
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }

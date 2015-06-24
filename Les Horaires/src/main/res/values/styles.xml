@@ -25,6 +25,9 @@
     <color name="accent">#ffab00</color>
     <color name="text_primary">#FFFFFF</color>
     <color name="text_dark">#000000</color>
+    <color name="text_card">#000000</color>
+    <color name="text_form_search">#9c27b0</color>
+    <color name="text_white">#FFFFFF</color>
     <color name="background">#EEEEEE</color>
     <color name="progressWheelColor">#5588FF</color>
 </resources>
