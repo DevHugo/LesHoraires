@@ -16,6 +16,7 @@ import com.amine.horaires.shopdetail.DetailShopActivity;
 import com.amine.horaires.util.RecyclerItemClickListener;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListShopsFragment extends Fragment {
@@ -59,24 +60,29 @@ public class ListShopsFragment extends Fragment {
             // Open the shop on click
             favsRecyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(getActivity().getApplicationContext(),
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, final int position) {
-                                final Intent i = new Intent(view.getContext(), DetailShopActivity.class);
-                                final Handler handler = new Handler();
-                                Runnable t = new Runnable() {
-                                    public void run() {
-                                        i.putExtra("shop", shops.get(position));
-                                        getActivity().startActivity(i);
-                                    }
-                                };
+                            new RecyclerItemClickListener.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, final int position) {
+                                    final Intent i = new Intent(view.getContext(), DetailShopActivity.class);
+                                    final Handler handler = new Handler();
+                                    Runnable t = new Runnable() {
+                                        public void run() {
+                                            i.putExtra("shop", shops.get(position));
+                                            getActivity().startActivity(i);
+                                        }
+                                    };
 
-                                handler.post(t);
+                                    handler.post(t);
+                                }
                             }
-                        }
                     )
             );
         }
+    }
+
+    public void updateList (List<Shop> listOfShops) {
+        adapter.setShops(listOfShops);
+        adapter.notifyDataSetChanged();
     }
 
 

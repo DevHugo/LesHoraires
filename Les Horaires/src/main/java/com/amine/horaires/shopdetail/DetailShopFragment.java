@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.amine.horaires.R;
 import com.amine.horaires.bdd.FavorisDao;
+import com.amine.horaires.listfavorites.ListFavoritesSingleton;
 import com.amine.horaires.models.Shop;
 import com.amine.horaires.updateshop.UpdateShopActivity;
 import com.amine.horaires.util.Parseur;
@@ -151,10 +152,17 @@ public class DetailShopFragment extends Fragment implements UpdateFav {
             dao.open();
             dao.deleteFavori(s.getId());
             dao.close();
+
+            // Notify the favorites list that he remove a shop
+            ListFavoritesSingleton.getInstance().getFavoritesShops().remove(s);
+
         } else {
             dao.open();
             dao.insertFavori(s);
             dao.close();
+
+            // Notify the favorites list that he added a shop
+            ListFavoritesSingleton.getInstance().getFavoritesShops().add(s);
         }
 
         isFav = !isFav;

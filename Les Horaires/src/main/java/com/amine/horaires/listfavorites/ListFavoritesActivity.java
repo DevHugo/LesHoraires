@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,8 +22,11 @@ import com.melnykov.fab.FloatingActionButton;
 import de.cketti.library.changelog.ChangeLog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListFavoritesActivity extends OptionsActivity {
+
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +43,24 @@ public class ListFavoritesActivity extends OptionsActivity {
             }
 
             // Create a new Fragment to be placed in the activity layout
-            ListShopsFragment firstFragment = new ListShopsFragment();
+            currentFragment = new ListShopsFragment();
 
             // Get all favorites shops
             FavorisDao dao = FavorisDao.getInstance(getApplicationContext());
             dao.openReadable();
             ArrayList<Shop> shops = dao.getAllFavoris();
 
+            // Update the list
+            ListFavoritesSingleton.getInstance().setFavoritesShops(shops);
+
             Bundle args = new Bundle();
             args.putParcelableArrayList("list", shops);
             args.putString("errorEmptyList", getErrorMessageListFavoritesEmpty());
 
-            firstFragment.setArguments(args);
+            currentFragment.setArguments(args);
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, firstFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, currentFragment).commit();
         }
 
         // Save user country
@@ -72,6 +80,22 @@ public class ListFavoritesActivity extends OptionsActivity {
                 search();
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        Log.w("com.amine.horaires", "onResume()");
+
+        // We should tell to the list that we have updated something
+        if (currentFragment != null) {
+            List<Shop> shops = ListFavoritesSingleton.getInstance().getFavoritesShops();
+
+            if (!shops.isEmpty()) {
+                ((ListShopsFragment) currentFragment).updateList(shops);
+            }
+        }
     }
 
     /**
