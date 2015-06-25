@@ -20,6 +20,8 @@ import com.amine.horaires.updateshop.UpdateShopActivity;
 import com.amine.horaires.util.Parseur;
 import com.amine.horaires.util.Utils;
 import com.melnykov.fab.FloatingActionButton;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Callback;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,9 +84,18 @@ public class DetailShopFragment extends Fragment implements UpdateFav {
 
         ImageView imageResult = (ImageView) getView().findViewById(R.id.imageView);
 
-        ImageTask t = new ImageTask(imageResult);
-        t.execute(s.getHoraires());
+        Picasso.with(imageResult.getContext())
+                .load(s.getHoraires())
+                .fit()
+                .into(imageResult, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        getActivity().supportStartPostponedEnterTransition();
+                    }
 
+                    @Override
+                    public void onError() {}
+                });
         TextView shopName = (TextView) getView().findViewById(R.id.shopName);
         TextView shopAddress = (TextView) getView().findViewById(R.id.shopAdress);
         TextView shopOpen = (TextView) getView().findViewById(R.id.shopOpen);
@@ -163,55 +174,6 @@ public class DetailShopFragment extends Fragment implements UpdateFav {
 
     public boolean getFav() {
         return isFav;
-    }
-
-    public class ImageTask extends AsyncTask<String, Void, Bitmap> {
-        private final ImageView contenu;
-
-        public ImageTask(ImageView contenu) {
-            this.contenu = contenu;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            URL url = null;
-            Bitmap b = null;
-            HttpURLConnection conn = null;
-            InputStream is = null;
-            try {
-                url = new URL(params[0]);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-                conn.connect();
-
-                is = conn.getInputStream();
-                b = BitmapFactory.decodeStream(is);
-
-                is.close();
-                conn.disconnect();
-
-            } catch (MalformedURLException e) {
-                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was " + url.toString(), e);
-            } catch (ProtocolException e) {
-                Log.e("ShopDisplay", "The protocol doesn't seems to be HTTP. Url was " + url.toString(), e);
-            } catch (IOException e) {
-                Log.e("ShopDisplay", "The image seems to be corrupt. Url was " + url.toString(), e);
-            } finally {
-                // Makes sure that the InputStream is closed after the app is finished using it.
-                if (is != null)
-                    try {
-                        is.close();
-                    } catch (IOException e) {}
-                if (conn != null)
-                    conn.disconnect();
-            }
-            return b;
-        }
-
-        protected void onPostExecute(Bitmap b) {
-            this.contenu.setImageBitmap(b);
-        }
     }
 
     private class SearchTask extends AsyncTask<URL, Void, String> {
