@@ -27,7 +27,10 @@
     <string name="contact">Contacter le dev</string>
     <string name="time_slot_error">Merci d\'utiliser des tranches de 5 minutes maximum</string>
     <string name="success_update_shop">Mise à jour effectuée!</string>
+    <string name="resultatRechercheVide">Aucun résultat n\'a été trouvé</string>
     <string name="fail_localize_user">Petit soucis lors de la localisation</string>
+    <string name="fail_fill_form">Oops. Préciser ce que vous rechercher d\'abord</string>
+    <string name="fail_connexion">Oops. Aucune connexion à internet. Utilisez vos favoris</string>
     <string-array name="days_arrays">
         <item>Lundi</item>
         <item>Mardi</item>

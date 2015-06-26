@@ -1,4 +1,4 @@
-package com.amine.horaires;
+package com.amine.horaires.updateshop;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.amine.horaires.R;
 import com.amine.horaires.models.Horaires;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;

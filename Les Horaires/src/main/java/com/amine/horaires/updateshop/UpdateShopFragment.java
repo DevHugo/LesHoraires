@@ -1,13 +1,17 @@
-package com.amine.horaires;
+package com.amine.horaires.updateshop;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import com.amine.horaires.R;
 import com.amine.horaires.models.Horaires;
 import com.amine.horaires.models.Shop;
 import com.amine.horaires.util.Utils;
@@ -24,28 +28,34 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class ShopUpdate extends OptionsActivity {
+public class UpdateShopFragment extends Fragment {
     private ArrayList<Horaires> h;
     private RelativeLayout loading;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.update_shop);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_update_shop, container, false);
+    }
 
-        loading = (RelativeLayout) findViewById(R.id.loading);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        final Shop s = getIntent().getExtras().getParcelable("shop");
 
-        ListView hList = (ListView) findViewById(R.id.horaires_list);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        Button save = (Button) findViewById(R.id.button);
+        loading = (RelativeLayout) getView().findViewById(R.id.loading);
+
+        final Shop s = getArguments().getParcelable("shop");
+
+        ListView hList = (ListView) getView().findViewById(R.id.horaires_list);
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
+        Button save = (Button) getView().findViewById(R.id.button);
 
         h = new ArrayList<Horaires>();
 
         initializeHoraires();
 
-        final UpdateAdapter adapter = new UpdateAdapter(this, h, getFragmentManager());
+        final UpdateAdapter adapter = new UpdateAdapter(getActivity().getApplicationContext(), h, getActivity().getFragmentManager());
 
         hList.setAdapter(adapter);
 
@@ -137,7 +147,7 @@ public class ShopUpdate extends OptionsActivity {
         protected void onPostExecute(String string) {
             loading.setVisibility(View.GONE);
             super.onPostExecute(string);
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.success_update_shop), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.success_update_shop), Toast.LENGTH_SHORT).show();
         }
     }
 }

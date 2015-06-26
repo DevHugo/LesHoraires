@@ -12,9 +12,8 @@ import com.amine.horaires.bdd.FavorisDao;
 import com.amine.horaires.models.Shop;
 import com.amine.horaires.util.Configuration;
 
-class OptionsActivity extends AppCompatActivity {
-    MenuItem favMenu = null;
-    boolean isFav = false;
+public class OptionsActivity extends AppCompatActivity {
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -22,7 +21,10 @@ class OptionsActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+    /*
+     * Default operation, when the user click on the menu.
+     */
+    public boolean defaultOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_mail:
                 Intent intent = new Intent(Intent.ACTION_SENDTO); // it's not ACTION_SEND
@@ -42,22 +44,7 @@ class OptionsActivity extends AppCompatActivity {
                 dialog.show();
                 return true;
             case R.id.action_reload:
-                MainActivity.razOrFavs(OptionsActivity.this);
-                return true;
-            case R.id.action_fav:
-                FavorisDao dao = FavorisDao.getInstance(OptionsActivity.this);
-                if (isFav) {
-                    // REMOVE
-                    dao.open();
-                    dao.deleteFavori(Configuration.currentShop.getId());
-                    dao.close();
-                    updateFavStatus(false);
-                } else {
-                    dao.open();
-                    dao.insertFavori(Configuration.currentShop);
-                    dao.close();
-                    updateFavStatus(true);
-                }
+                //MainActivity.razOrFavs(OptionsActivity.this);
                 return true;
             case android.R.id.home:
                 this.finish();
@@ -67,23 +54,4 @@ class OptionsActivity extends AppCompatActivity {
         }
     }
 
-    private void updateFavStatus(boolean state) {
-        if (state) {
-            favMenu.setIcon(R.mipmap.ic_turned_in_black_24dp);
-        } else {
-            favMenu.setIcon(R.mipmap.ic_turned_in_not_black_24dp);
-        }
-    }
-
-    void updateFavStatus() {
-        FavorisDao dao = FavorisDao.getInstance(OptionsActivity.this);
-        dao.open();
-        Shop sh = dao.getFavori(Configuration.currentShop.getId());
-        dao.close();
-        if (sh == null) {
-            updateFavStatus(false);
-        } else {
-            updateFavStatus(true);
-        }
-    }
 }

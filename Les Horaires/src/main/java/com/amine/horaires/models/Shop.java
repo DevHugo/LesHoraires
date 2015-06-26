@@ -220,6 +220,24 @@ public class Shop implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Shop shop = (Shop) o;
+
+        if (name != null ? !name.equals(shop.name) : shop.name != null) return false;
+        return !(adresse != null ? !adresse.equals(shop.adresse) : shop.adresse != null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (adresse != null ? adresse.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);

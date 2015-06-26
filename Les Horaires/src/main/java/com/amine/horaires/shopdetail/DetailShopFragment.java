@@ -1,23 +1,23 @@
-package com.amine.horaires;
+package com.amine.horaires.shopdetail;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.amine.horaires.R;
 import com.amine.horaires.bdd.FavorisDao;
+import com.amine.horaires.listfavorites.ListFavoritesSingleton;
 import com.amine.horaires.models.Shop;
-import com.amine.horaires.util.Configuration;
+import com.amine.horaires.updateshop.UpdateShopActivity;
 import com.amine.horaires.util.Parseur;
 import com.amine.horaires.util.Utils;
 import com.melnykov.fab.FloatingActionButton;
@@ -31,41 +31,48 @@ import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 
-public class ShopDisplay extends OptionsActivity {
+public class DetailShopFragment extends Fragment implements UpdateFav {
+
+    private boolean isFav = false;
+    private Shop s;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.shop_display);
-        Shop s = getIntent().getExtras().getParcelable("shop");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_detail_shop, container, false);
+    }
 
-        Configuration.currentShop = s;
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        FavorisDao dao = FavorisDao.getInstance(ShopDisplay.this);
-        dao.open();
+        s = getArguments().getParcelable("shop");
+        FavorisDao dao = FavorisDao.getInstance(getActivity().getApplicationContext());
+        dao.openReadable();
         List<Shop> fs = dao.getAllFavoris();
-        dao.close();
 
         while (!isFav && !fs.isEmpty()) {
-            isFav = fs.remove(0).getId() == Configuration.currentShop.getId();
+            isFav = fs.remove(0).getId() == s.getId();
         }
+
         if (isFav) {
             SearchTask st = new SearchTask();
             st.execute(Utils.generateUrlForId(s.getId()));
-            s = Configuration.currentShop;
+
             dao.open();
             dao.updateFavori(s);
             dao.close();
         }
+
         generateView(s);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
 
         final Shop finalS = s;
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                final Intent i = new Intent(getBaseContext(), ShopUpdate.class);
+                final Intent i = new Intent(getActivity().getApplicationContext(), UpdateShopActivity.class);
                 i.putExtra("shop", finalS);
                 startActivity(i);
             }
@@ -73,20 +80,19 @@ public class ShopDisplay extends OptionsActivity {
     }
 
     private void generateView(final Shop s) {
-        Configuration.currentShop = s;
 
-        ImageView imageResult = (ImageView) findViewById(R.id.imageView);
+        ImageView imageResult = (ImageView) getView().findViewById(R.id.imageView);
 
         ImageTask t = new ImageTask(imageResult);
         t.execute(s.getHoraires());
 
-        TextView shopName = (TextView) findViewById(R.id.shopName);
-        TextView shopAddress = (TextView) findViewById(R.id.shopAdress);
-        TextView shopOpen = (TextView) findViewById(R.id.shopOpen);
-        TextView shopStatus = (TextView) findViewById(R.id.shopStatus);
-        ImageView wifi = (ImageView) findViewById(R.id.wifi);
-        ImageView parking = (ImageView) findViewById(R.id.parking);
-        ImageView access = (ImageView) findViewById(R.id.handi);
+        TextView shopName = (TextView) getView().findViewById(R.id.shopName);
+        TextView shopAddress = (TextView) getView().findViewById(R.id.shopAdress);
+        TextView shopOpen = (TextView) getView().findViewById(R.id.shopOpen);
+        TextView shopStatus = (TextView) getView().findViewById(R.id.shopStatus);
+        ImageView wifi = (ImageView) getView().findViewById(R.id.wifi);
+        ImageView parking = (ImageView) getView().findViewById(R.id.parking);
+        ImageView access = (ImageView) getView().findViewById(R.id.handi);
 
         shopName.setText(s.getName());
         shopAddress.setText(s.getAdresse());
@@ -107,7 +113,7 @@ public class ShopDisplay extends OptionsActivity {
             parking.setAlpha((float) 0.1);
         }
 
-        findViewById(R.id.imageView).setOnClickListener(new View.OnClickListener() {
+        getView().findViewById(R.id.imageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s.getUrl()));
@@ -115,7 +121,7 @@ public class ShopDisplay extends OptionsActivity {
             }
         });
 
-        findViewById(R.id.callButton).setOnClickListener(new View.OnClickListener() {
+        getView().findViewById(R.id.callButton).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String numeroAppeler = "tel:" + s.getTel();
                 startActivity(new Intent(Intent.ACTION_DIAL, Uri
@@ -123,7 +129,7 @@ public class ShopDisplay extends OptionsActivity {
             }
         });
 
-        findViewById(R.id.gpsButton).setOnClickListener(new View.OnClickListener() {
+        getView().findViewById(R.id.gpsButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new
@@ -135,24 +141,36 @@ public class ShopDisplay extends OptionsActivity {
 
             }
         });
-    }
 
-    // @todo: use this to update the shop if connected.
-    private boolean checkDeviceConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Need permission : android.permission.ACCESS_NETWORK_STATE
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        return (networkInfo != null && networkInfo.isConnected());
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_actions_shop, menu);
-        favMenu = menu.findItem(R.id.action_fav);
-        updateFavStatus();
-        return super.onCreateOptionsMenu(menu);
+    public void updateFav() {
+        FavorisDao dao = FavorisDao.getInstance(getActivity().getApplicationContext());
+
+        if (isFav) {
+            dao.open();
+            dao.deleteFavori(s.getId());
+            dao.close();
+
+            // Notify the favorites list that he remove a shop
+            ListFavoritesSingleton.getInstance().getFavoritesShops().remove(s);
+
+        } else {
+            dao.open();
+            dao.insertFavori(s);
+            dao.close();
+
+            // Notify the favorites list that he added a shop
+            ListFavoritesSingleton.getInstance().getFavoritesShops().add(s);
+        }
+
+        isFav = !isFav;
+        ((UpdateActionBar) getActivity()).updateFavsIcon(isFav);
+    }
+
+    public boolean getFav() {
+        return isFav;
     }
 
     public class ImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -182,7 +200,7 @@ public class ShopDisplay extends OptionsActivity {
                 conn.disconnect();
 
             } catch (MalformedURLException e) {
-                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was "+url.toString(), e);
+                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was " + url.toString(), e);
             } catch (ProtocolException e) {
                 Log.e("ShopDisplay", "The protocol doesn't seems to be HTTP. Url was " + url.toString(), e);
             } catch (IOException e) {
@@ -231,11 +249,11 @@ public class ShopDisplay extends OptionsActivity {
                     contentAsString = contentAsString + reader.nextLine();
                 }
             } catch (MalformedURLException e) {
-                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was " + url.toString(), e);
+                Log.e("ShopDisplay", "The API doesn't respond correctly. Asked url was " + url.toString(), e);
             } catch (ProtocolException e) {
                 Log.e("ShopDisplay", "The protocol doesn't seems to be HTTP. Url was " + url.toString(), e);
             } catch (IOException e) {
-                Log.e("ShopDisplay", "The API response is not readable. Url was " + url.toString(), e);
+                Log.e("ShopDisplay", "The API response is not readable. Url was " + url.toString(), e);
             } finally {
                 // Makes sure that the InputStream is closed after the app is finished using it.
                 if (is != null)
@@ -251,7 +269,8 @@ public class ShopDisplay extends OptionsActivity {
         @Override
         protected void onPostExecute(String string) {
             super.onPostExecute(string);
-            Configuration.currentShop = new Parseur().parserShops(string).get(0);
+            s = new Parseur().parserShops(string).get(0);
         }
     }
+
 }
